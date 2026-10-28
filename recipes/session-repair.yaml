@@ -13,7 +13,7 @@
 #     with session_id=<session-id>"
 
 name: "session-repair"
-description: "Diagnose and optionally repair a broken Amplifier session"
+description: "Diagnose a broken session and prepare only a supported separate repair copy"
 version: "1.0.0"
 author: "Provider Doctor Bundle"
 tags: ["session", "repair", "diagnose", "orphaned-tool-calls", "ordering-violations"]
@@ -59,9 +59,12 @@ steps:
         - MEDIUM: session is degraded; repair recommended
         - LOW: minor anomaly; monitor only
 
-      At the end of your report, set needs_repair=true if any CRITICAL or
-      WARNING severity issues were found. Set needs_repair=false if the session
-      is healthy or has only MEDIUM/LOW issues.
+      Set needs_repair=true only when the actual bundled helper accepts the
+      direct role/content format and identifies unambiguous missing tool results
+      eligible for a separate copy. Unsupported envelopes, malformed/truncated
+      events, duplicate IDs, delayed results and ambiguous ordering violations
+      need review, even if severity is CRITICAL or WARNING; set needs_repair=false
+      and report that gap. A finding alone does not authorize an in-place edit.
 
       Return your report followed by exactly one line in this format:
         NEEDS_REPAIR: true
@@ -75,44 +78,40 @@ steps:
   # ---------------------------------------------------------------------------
   # Step 2: Repair
   # Only runs when diagnose.needs_repair is true.
-  # Applies conservative repairs: backup first, inject synthetic tool results
-  # to close orphaned calls, verify the transcript is clean after repair.
+  # Preserves source/backup, invokes the copy-only helper for eligible orphaned
+  # calls, and verifies structure without claiming a live provider resume.
   # ---------------------------------------------------------------------------
   - id: "repair"
     condition: "{{diagnose.needs_repair}}"
     agent: "provider-doctor:session-doctor"
     prompt: |
-      Apply repairs to session {{session_id}} based on the diagnosis below.
+      Prepare a separate repair copy for session {{session_id}} based on:
 
-      DIAGNOSIS:
       {{diagnose}}
 
-      Repair steps (in order):
+      Preserve the original source and any backup. Resolve the actual transcript
+      format and the bundled skills/session-doctor/scripts/session_doctor.py helper.
+      An Amplifier events.jsonl envelope is not automatically direct role/content
+      JSONL. For unsupported or ambiguous input, report the gap without writing.
 
-      1. **Backup** — create a timestamped backup before any modification:
-           events.jsonl.bak.<timestamp>
-         Never modify the original without this backup in place.
+      For a supported direct role/content input with unambiguous orphaned tool
+      calls, select a new explicit repair-copy destination and invoke the helper
+      with SOURCE --repair-copy NEW_DESTINATION. It creates the destination
+      exclusively and refuses source overwrite or an existing target.
 
-      2. **Inject synthetic tool results** — for each orphaned tool call found
-         in the diagnosis, inject a synthetic tool_result entry immediately
-         after the assistant turn that contains the orphaned tool_use.
-         Use is_error=true and a message indicating the call was interrupted.
+      The helper may inject synthetic tool_result error markers only for calls
+      whose result is absent. Markers mean interrupted, with no execution result;
+      never invent successful tool output. If the helper rejects duplicate IDs,
+      delayed results, malformed events or ordering violations, do not hand-edit,
+      insert role-bridging messages or reorder the transcript to bypass it.
 
-      3. **Fix ordering violations** — if any consecutive same-role messages
-         were found, inject minimal bridging messages to satisfy the
-         alternating-role requirement.
+      Verify the separate copy and report source/copy identities, inserted IDs,
+      structural results, unchanged original and remaining findings. A structural
+      PASS is not proof of live provider resumption: report that as NOT TESTED
+      until separately observed through the actual authorized host.
 
-      4. **Verify repair** — re-run the full diagnosis on the modified
-         events.jsonl and confirm all CRITICAL and WARNING issues are resolved.
-         Confirm the final event leaves the transcript in a resumable state.
-
-      5. **Report changes** — summarize every modification made:
-         - Which tool_use IDs received synthetic results
-         - Which ordering violations were bridged
-         - Verification outcome (PASS or FAIL with details)
-         - Whether the session is now resumable
-
-      Prefer REPAIR (inject synthetic entries) over REWIND (truncate history).
-      Only perform REWIND if explicitly requested and repair is not possible.
+      REWIND truncates history and is not implemented by this helper. It requires
+      an explicit user request, a known-format separate candidate and review; do
+      not truncate or replace the source as a side effect of this recipe.
     output: "repair"
     timeout: 600

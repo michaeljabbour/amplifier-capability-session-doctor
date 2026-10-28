@@ -73,7 +73,8 @@
     "One portable method entry with mode references; original native engines, agents and records retained as optional adapters."
   ],
   "docs": [
-    "docs/CONSOLIDATION.md"
+    "docs/CONSOLIDATION.md",
+    "docs/ADAPTERS.md"
   ],
   "publication_status": "Installation and evidence scopes are documented below."
 }
