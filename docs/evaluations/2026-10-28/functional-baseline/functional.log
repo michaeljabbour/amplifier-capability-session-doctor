@@ -1,0 +1,8 @@
+test_delayed_real_result_is_not_replaced (__main__.Gate.test_delayed_real_result_is_not_replaced) ... ok
+test_malformed_unknown_and_duplicate_results_are_not_auto_repaired (__main__.Gate.test_malformed_unknown_and_duplicate_results_are_not_auto_repaired) ... ok
+test_repair_preserves_source_and_marks_no_execution (__main__.Gate.test_repair_preserves_source_and_marks_no_execution) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.000s
+
+OK

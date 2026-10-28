@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-28",
+  "status": "local-functional-baseline",
+  "source_commit": "0938f46e601d9f9bc5e5a6ac4210ee0966baffee",
+  "python": "3.12.5",
+  "fixture_content": "fictional",
+  "model_calls": 0,
+  "notes": "Native source checks recorded separately; 3 substantive direct-message repair checks passed.",
+  "limitations": [
+    "The helper supports direct role/content JSONL only; live resume and provider acceptance are separate checks."
+  ],
+  "files": {
+    "native.log": "761e0febe8740ee1fb55f551f33e96463fa6fd568fd0343cea500538a9361efb",
+    "functional.log": "fae00b9a5acce83824b032965827eb1bf96155062129082603608159ec2c05af"
+  }
+}

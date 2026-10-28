@@ -1,0 +1,78 @@
+{
+  "id": "session-doctor",
+  "display_name": "Session Doctor",
+  "kind": "skill",
+  "promise": "Diagnose a broken agent session and prepare a reversible repair without inventing execution results.",
+  "audience": "People repairing transcripts and provider/session integration.",
+  "trigger": "A session cannot resume or provider errors suggest structural corruption.",
+  "skill_path": "skills/session-doctor",
+  "modes": [
+    {
+      "name": "Diagnose",
+      "when": "A session or provider has failed.",
+      "output": "Severity-ranked findings with supported evidence and envelope limits."
+    },
+    {
+      "name": "Repair",
+      "when": "A specific repair is authorized.",
+      "output": "A separate repaired copy and verification report."
+    },
+    {
+      "name": "Escalate",
+      "when": "The format or failure remains uncertain.",
+      "output": "A minimal redacted support bundle and next diagnostic step."
+    }
+  ],
+  "examples": [
+    {
+      "title": "Fictional worked example",
+      "brief": "A fictional task illustrating Session Doctor.",
+      "before": "An interrupted tool call is \u201cfixed\u201d by a fabricated successful result or truncated history.",
+      "after": "A new copy records the missing result as interrupted and leaves the original intact.",
+      "why": "The repaired structure remains honest about what actually executed.",
+      "fictional": true
+    }
+  ],
+  "boundaries": [
+    "The helper supports direct role/content JSONL only; live resume and provider acceptance are separate checks."
+  ],
+  "install_commands": [
+    "python3 scripts/capability.py install --dest ~/.agents/skills"
+  ],
+  "runtime_install_commands": [],
+  "verification": [
+    {
+      "name": "Functional acceptance",
+      "command": "python3 scripts/functional_gate.py",
+      "expected": "Supplied fictional tasks exercise actual mechanisms and failure boundaries.",
+      "status": "passed",
+      "evidence": "326 retained native tests and 3 substantive direct-message repair checks passed; no live provider or session resume performed."
+    },
+    {
+      "name": "Native host acceptance",
+      "command": "See retained source integration guide",
+      "expected": "Actual provider/host/desktop/daemon/runner acceptance for the selected adapter.",
+      "status": "not-run",
+      "evidence": "No live model, real desktop transaction, invitation, deployment or production data migration was performed by this functional baseline."
+    }
+  ],
+  "sources": [
+    {
+      "repo": "amplifier-bundle-provider-doctor",
+      "commit": "0938f46e601d9f9bc5e5a6ac4210ee0966baffee",
+      "paths": [
+        "agents",
+        "modules",
+        "context"
+      ],
+      "license": "MIT",
+      "role": "Primary retained owner history, mechanisms and records; portable method consolidates the listed entry points."
+    }
+  ],
+  "consolidation": [
+    "One portable method entry with mode references; original native engines, agents and records retained as optional adapters."
+  ],
+  "docs": [
+    "docs/CONSOLIDATION.md"
+  ]
+}

@@ -1,4 +1,14 @@
-# amplifier-bundle-provider-doctor
+# Session Doctor
+
+Diagnose a broken agent session and prepare a reversible repair without inventing execution results.
+
+## Consolidated capability
+
+Portable method: [skills/session-doctor/SKILL.md](skills/session-doctor/SKILL.md). Install with `python3 scripts/capability.py install --dest ~/.agents/skills`. See [consolidation and runtime boundaries](docs/CONSOLIDATION.md). The retained source guide below documents the optional original host integration and historical evidence; it is not a new outcome claim.
+
+## Retained source guide
+
+### amplifier-bundle-provider-doctor
 
 Provider resilience, session repair, and support tooling for [Amplifier](https://github.com/amplifier-dev/amplifier) agents. Automatically fails over across LLM provider tiers when errors hit, recovers broken sessions from orphaned tool calls and transcript corruption, and provides structured diagnostics and support ticket generation — all as a composable bundle with zero upstream changes.
 
