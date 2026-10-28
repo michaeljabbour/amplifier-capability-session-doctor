@@ -1,14 +1,45 @@
 # Session Doctor
 
-Diagnose a broken agent session and prepare a reversible repair without inventing execution results.
+Understand a broken session before you repair it.
 
-## Consolidated capability
+For people whose agent session will not resume. Session Doctor checks the supported transcript structure, names the ambiguity and prepares a separate repair copy when the evidence supports one, leaving the original available.
 
-Portable method: [skills/session-doctor/SKILL.md](skills/session-doctor/SKILL.md). Install with `python3 scripts/capability.py install --dest ~/.agents/skills`. See [consolidation and runtime boundaries](docs/CONSOLIDATION.md). The retained source guide below documents the optional original host integration and historical evidence; it is not a new outcome claim.
+[Explore the site](https://michaeljabbour.github.io/amplifier-skill-session-doctor/)
 
-## Retained native adapters
+## What you get
 
-The provider-failover and telemetry modules remain available for existing host integrations; installing the portable method does not activate them. The legacy `provider-doctor:session-doctor` agent and session-repair recipe now follow the same copy-only helper boundary. They do not bridge roles, truncate live history or claim a provider resumed because structural checks pass. Amplifier event envelopes outside the helper's direct role/content format need an explicit adapter; none is implied. See [native adapter boundaries](docs/ADAPTERS.md).
+- **Keep the original intact.** Diagnose first and write any supported repair to a new destination that cannot overwrite existing work.
+- **See what is actually missing.** Distinguish a missing tool result from malformed JSON, duplicate IDs or an unsupported event format.
+- **Avoid invented history.** A synthetic repair entry says interrupted with no result available; it never pretends an action completed.
+
+## Start here
+
+```sh
+git clone https://github.com/michaeljabbour/amplifier-skill-session-doctor.git
+cd amplifier-skill-session-doctor
+python3 scripts/capability.py install --dest ~/.agents/skills
+```
+
+This installs the portable method and its packaged references into your agent skill folder. If your host uses another folder, pass that path to `--dest`. Start a new session or use your host’s skill refresh so it can discover the installed skill. Optional native tools are installed separately.
+
+Try this first task:
+
+> Use Session Doctor to inspect a disposable direct role/content JSONL transcript. Diagnose before changing anything. If a missing tool result is unambiguous, prepare a new repair copy that marks the result unavailable, preserve the original and explain the remaining host-resume check.
+
+## What you need
+
+- Python 3.11 or later for the portable install helper.
+- The portable direct-message helper is Python stdlib-only and requires no provider key.
+- It reads at most the documented 16 MB limit; unsupported event envelopes are reported explicitly.
+- Optional failover, cache and host adapters have separate setup and acceptance requirements.
+
+## Evidence and limits
+
+Native and functional fixtures cover supported structure, ambiguous failures and copy-only repair. They do not establish successful resumption in every host or provider.
+
+The worked examples on the site are fictional. They illustrate the output and decisions; they are not user results or measured benefit. See [consolidation and runtime boundaries](docs/CONSOLIDATION.md) for retained interfaces and acceptance scope.
+
+---
 
 ## Retained source guide
 
@@ -73,7 +104,7 @@ App bundles compose onto every session automatically, regardless of which primar
 
 ```bash
 # From GitHub
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-provider-doctor@main --app
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-skill-session-doctor@main --app
 
 # From a local clone
 amplifier bundle add file:///path/to/amplifier-bundle-provider-doctor --app
@@ -92,7 +123,7 @@ You should see `provider-doctor` with status `app`.
 If you only want it for specific projects rather than globally:
 
 ```bash
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-bundle-provider-doctor@main
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-skill-session-doctor@main
 amplifier bundle use provider-doctor
 ```
 
@@ -281,7 +312,7 @@ MIT
 
 This is a composable Amplifier bundle. To contribute:
 
-1. Clone the repo: `git clone https://github.com/michaeljabbour/amplifier-bundle-provider-doctor.git`
+1. Clone the repo: `git clone https://github.com/michaeljabbour/amplifier-skill-session-doctor.git`
 2. Run the tests: `python3 -m pytest tests/ -v`
 3. Make changes following the existing patterns (TDD — write tests first)
 4. Ensure all 259+ tests pass before submitting a PR

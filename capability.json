@@ -25,9 +25,9 @@
   ],
   "examples": [
     {
-      "title": "Fictional worked example",
-      "brief": "A fictional task illustrating Session Doctor.",
-      "before": "An interrupted tool call is \u201cfixed\u201d by a fabricated successful result or truncated history.",
+      "title": "Recover an interrupted tool call",
+      "brief": "Use Session Doctor to inspect a disposable direct role/content JSONL transcript. Diagnose before changing anything. If a missing tool result is unambiguous, prepare a new repair copy that marks the result unavailable, preserve the original and explain the remaining host-resume check.",
+      "before": "An interrupted tool call is “fixed” by a fabricated successful result or truncated history.",
       "after": "A new copy records the missing result as interrupted and leaves the original intact.",
       "why": "The repaired structure remains honest about what actually executed.",
       "fictional": true
@@ -76,5 +76,58 @@
     "docs/CONSOLIDATION.md",
     "docs/ADAPTERS.md"
   ],
-  "publication_status": "Installation and evidence scopes are documented below."
+  "publication_status": "Installation and evidence scopes are documented below.",
+  "marketing": {
+    "headline": "Understand a broken session before you repair it.",
+    "lead": "For people whose agent session will not resume. Session Doctor checks the supported transcript structure, names the ambiguity and prepares a separate repair copy when the evidence supports one, leaving the original available.",
+    "benefits": [
+      {
+        "title": "Keep the original intact",
+        "body": "Diagnose first and write any supported repair to a new destination that cannot overwrite existing work."
+      },
+      {
+        "title": "See what is actually missing",
+        "body": "Distinguish a missing tool result from malformed JSON, duplicate IDs or an unsupported event format."
+      },
+      {
+        "title": "Avoid invented history",
+        "body": "A synthetic repair entry says interrupted with no result available; it never pretends an action completed."
+      }
+    ],
+    "walkthrough": [
+      {
+        "title": "Identify the format",
+        "detail": "Record the host, transcript revision and failure class without exposing private transcript contents."
+      },
+      {
+        "title": "Inspect the structure",
+        "detail": "Check supported direct role/content JSONL for pairing, duplicate IDs, malformed lines and advisory ordering concerns."
+      },
+      {
+        "title": "Prepare a copy and verify",
+        "detail": "Repair only an unambiguous missing result into a new file, recheck it and separately test resumption in the actual host."
+      }
+    ],
+    "use_when": [
+      "A supported direct-message JSONL transcript cannot resume.",
+      "A tool call appears to have no result after interruption.",
+      "You need a redacted diagnosis before host-specific recovery."
+    ],
+    "not_for": [
+      "Blindly rewriting an unfamiliar event envelope.",
+      "Equating a structurally clean copy with provider acceptance."
+    ],
+    "quickstart_prompt": "Use Session Doctor to inspect a disposable direct role/content JSONL transcript. Diagnose before changing anything. If a missing tool result is unambiguous, prepare a new repair copy that marks the result unavailable, preserve the original and explain the remaining host-resume check.",
+    "output_preview": "Diagnosis: one tool call has no result\nOriginal: unchanged\nRepair eligibility: only if pairing and order are otherwise unambiguous\nNew copy: explicit destination, must not already exist\nInserted status: interrupted; result unavailable\n\nStill to check: actual host and provider accept the repaired copy.",
+    "example_note": "Fictional diagnostic outline. No real session transcript was opened or modified for this example.",
+    "install_notes": [
+      "Python 3.11 or later is required by the portable install/build helper. The installed method runs through your agent host.",
+      "The portable direct-message helper is Python stdlib-only and requires no provider key.",
+      "It reads at most the documented 16 MB limit; unsupported event envelopes are reported explicitly.",
+      "Optional failover, cache and host adapters have separate setup and acceptance requirements."
+    ],
+    "proof_summary": "Native and functional fixtures cover supported structure, ambiguous failures and copy-only repair. They do not establish successful resumption in every host or provider.",
+    "next_step": "Work on a disposable copy first and identify the exact transcript format before requesting a repair."
+  },
+  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-session-doctor"
 }
