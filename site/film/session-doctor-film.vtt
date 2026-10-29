@@ -1,0 +1,52 @@
+WEBVTT
+
+00:00:00.290 --> 00:00:02.420
+Your agent session is a zipper.
+
+00:00:02.910 --> 00:00:05.560
+Every tool call locks onto its result.
+
+00:00:06.580 --> 00:00:09.390
+Halfway through a job, your laptop sleeps.
+
+00:00:13.600 --> 00:00:16.010
+Next morning, the session won’t resume.
+
+00:00:16.320 --> 00:00:17.880
+And you can’t see why.
+
+00:00:18.660 --> 00:00:21.820
+You could paste in a result that says it worked.
+
+00:00:24.840 --> 00:00:27.670
+Session Doctor looks before it touches anything.
+
+00:00:29.380 --> 00:00:30.850
+It names the problem.
+
+00:00:31.200 --> 00:00:33.410
+One tool call, with no result.
+
+00:00:36.500 --> 00:00:39.770
+It leaves the original alone, and repairs a copy.
+
+00:00:41.220 --> 00:00:43.310
+The new piece tells the truth.
+
+00:00:43.740 --> 00:00:44.530
+Interrupted.
+
+00:00:44.900 --> 00:00:46.170
+No result available.
+
+00:00:48.560 --> 00:00:52.830
+A broken line, or a repeated ID, and it stops for review.
+
+00:00:53.720 --> 00:00:56.820
+Then you test the resume in your own app.
+
+00:01:03.390 --> 00:01:04.080
+Session Doctor.
+
+00:01:04.430 --> 00:01:07.660
+Understand a broken session before you repair it.

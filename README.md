@@ -2,6 +2,8 @@
 
 Understand a broken session before you repair it.
 
+Watch the [70-second film](https://michaeljabbour.github.io/amplifier-skill-session-doctor/#film): a session that will not resume, one tool call with no result, and a repaired copy that says so instead of faking it. The example in it is fictional.
+
 For people whose agent session will not resume. Session Doctor checks the supported transcript structure, names the ambiguity and prepares a separate repair copy when the evidence supports one, leaving the original available.
 
 [Explore the site](https://michaeljabbour.github.io/amplifier-skill-session-doctor/)

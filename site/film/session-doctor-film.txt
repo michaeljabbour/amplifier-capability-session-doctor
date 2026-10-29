@@ -1,0 +1,12 @@
+Your agent session is a zipper. Every tool call locks onto its result.
+Halfway through a job, your laptop sleeps.
+Next morning, the session won’t resume. And you can’t see why.
+You could paste in a result that says it worked.
+Session Doctor looks before it touches anything.
+It names the problem. One tool call, with no result.
+It leaves the original alone, and repairs a copy.
+The new piece tells the truth. Interrupted. No result available.
+A broken line, or a repeated ID, and it stops for review.
+Then you test the resume in your own app.
+On screen: Mark the gap. Don’t fake the result.
+Session Doctor. Understand a broken session before you repair it.

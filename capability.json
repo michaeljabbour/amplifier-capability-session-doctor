@@ -129,5 +129,12 @@
     "proof_summary": "Native and functional fixtures cover supported structure, ambiguous failures and copy-only repair. They do not establish successful resumption in every host or provider.",
     "next_step": "Work on a disposable copy first and identify the exact transcript format before requesting a repair."
   },
-  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-session-doctor"
+  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-session-doctor",
+  "film": {
+    "file": "session-doctor-film",
+    "seconds": 70,
+    "heading": "A zipper with a missing tooth.",
+    "blurb": "In 70 seconds, a laptop sleeps halfway through a job and the session will not resume. Session Doctor looks before it touches anything, names the one tool call with no result, leaves the original alone and repairs a copy with a piece that tells the truth. A broken line or a repeated ID stops it for review. Captions are on the player; a transcript is below.",
+    "note": "The session and the photo-renaming job are a fictional example. The film shows how the skill behaves; it does not report results."
+  }
 }
