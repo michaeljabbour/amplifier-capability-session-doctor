@@ -334,3 +334,7 @@ identifiers, configured tier/bundle/tool labels, status/count/timing metadata, O
 a stable pseudonymous machine hash. Choose nonprivate configuration labels when opting in;
 this feature does not make those metadata anonymous. Local failure handling continues even
 when telemetry is disabled or unavailable.
+
+## Repository migration
+
+This repository was renamed from `amplifier-skill-session-doctor` to `amplifier-capability-session-doctor`. Existing installed method names, bundle aliases and native interfaces stay the same. See the [migration guide](https://michaeljabbour.github.io/migration/) and [repository map](https://michaeljabbour.github.io/migration/mapping.json) for source URL updates.
