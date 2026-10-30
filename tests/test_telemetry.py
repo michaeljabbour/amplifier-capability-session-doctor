@@ -32,7 +32,7 @@ def _reload_telemetry(**env_overrides):
 
     import provider_failover.telemetry as mod
 
-    with patch.dict("os.environ", env_overrides, clear=False):
+    with patch.dict("os.environ", {"SESSION_DOCTOR_TELEMETRY_ENABLED": "true", **env_overrides}, clear=False):
         importlib.reload(mod)
     return mod
 
@@ -83,7 +83,7 @@ class TestEnabled:
         )
         assert mod._ENABLED is False
 
-    def test_enabled_when_both_set(self):
+    def test_enabled_when_opted_in_and_both_set(self):
         mod = _reload_telemetry(
             SUPABASE_URL="https://example.supabase.co",
             SUPABASE_ANON_KEY="some-key",
@@ -230,7 +230,6 @@ class TestReportError:
             "tier_label",
             "tier_index",
             "error_type",
-            "error_message",
             "status_code",
             "retryable",
             "prompt_tokens",

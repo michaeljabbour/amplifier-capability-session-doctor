@@ -1,11 +1,13 @@
 """Fire-and-forget provider error telemetry.
 
 Reports provider errors to a community Supabase database for aggregate
-analysis.  No PII, no prompts, no responses — just structured diagnostic
-data about provider failures.
+analysis. Raw diagnostic text is omitted; only structured provider/status
+metadata and a stable pseudonymous machine identifier are included.
 
-Telemetry is silently disabled if SUPABASE_URL or SUPABASE_ANON_KEY
-environment variables are not set.
+Telemetry is disabled unless SESSION_DOCTOR_TELEMETRY_ENABLED is explicitly
+true and SUPABASE_URL / SUPABASE_ANON_KEY configure a valid HTTPS (or loopback)
+endpoint. Raw error/reason text is omitted centrally; structured diagnostics
+and a stable pseudonymous machine hash remain opt-in.
 """
 
 from __future__ import annotations
@@ -17,6 +19,8 @@ import logging
 import os
 import platform
 import socket
+import urllib.error
+import urllib.parse
 import urllib.request
 import uuid
 
@@ -26,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 
 def _machine_hash() -> str:
-    """SHA-256 hash of MAC address + hostname.  Not reversible."""
+    """Stable pseudonymous machine fingerprint; not an anonymity guarantee."""
     mac = hex(uuid.getnode())
     hostname = socket.gethostname()
     return hashlib.sha256(f"{mac}:{hostname}".encode()).hexdigest()[:16]
@@ -65,9 +69,39 @@ _load_dotenv()
 
 # --- Supabase config from env --------------------------------------------
 
-_SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
+def _safe_service_url(url: str) -> bool:
+    """Credentials may cross HTTPS, or HTTP to an exact loopback host only."""
+    try:
+        parts = urllib.parse.urlsplit(url)
+        # Accessing .port also rejects malformed/out-of-range ports.
+        _ = parts.port
+        if not parts.hostname or parts.username is not None or parts.password is not None:
+            return False
+        if parts.query or parts.fragment:
+            return False
+        return parts.scheme == "https" or (
+            parts.scheme == "http" and parts.hostname.lower() in ("localhost", "127.0.0.1", "::1")
+        )
+    except (TypeError, ValueError):
+        return False
+
+
+def _safe_payload(payload: dict) -> dict:
+    """Do not send arbitrary provider/tool/approval/policy exception text."""
+    return {key: value for key, value in payload.items()
+            if key != "error_message" and value is not None}
+
+
+class _NoRedirect(urllib.request.HTTPRedirectHandler):
+    def redirect_request(self, req, fp, code, msg, headers, newurl):
+        # Raising avoids forwarding either ordinary or unredirected headers.
+        raise urllib.error.HTTPError(req.full_url, code, "Telemetry redirect refused", headers, fp)
+
+
+_SUPABASE_URL = os.environ.get("SUPABASE_URL", "").strip().rstrip("/")
 _SUPABASE_ANON_KEY = os.environ.get("SUPABASE_ANON_KEY", "")
-_ENABLED = bool(_SUPABASE_URL and _SUPABASE_ANON_KEY)
+_OPTED_IN = os.environ.get("SESSION_DOCTOR_TELEMETRY_ENABLED", "").strip().lower() in ("1", "true", "yes", "on")
+_ENABLED = bool(_OPTED_IN and _SUPABASE_ANON_KEY and _safe_service_url(_SUPABASE_URL))
 _ENDPOINT = f"{_SUPABASE_URL}/rest/v1/provider_errors" if _ENABLED else ""
 _EVENTS_ENDPOINT = (
     f"{_SUPABASE_URL}/rest/v1/telemetry_events" if _ENABLED else ""
@@ -82,20 +116,23 @@ def _post_sync(
     endpoint: str | None = None,
 ) -> None:
     """Blocking POST to Supabase.  Runs in a thread via asyncio.to_thread."""
+    if not _ENABLED:
+        return
     url = endpoint or _ENDPOINT
-    data = json.dumps(payload).encode("utf-8")
+    if not _safe_service_url(url):
+        return
+    data = json.dumps(_safe_payload(payload)).encode("utf-8")
     req = urllib.request.Request(
         url,
         data=data,
-        headers={
-            "apikey": _SUPABASE_ANON_KEY,
-            "Authorization": f"Bearer {_SUPABASE_ANON_KEY}",
-            "Content-Type": "application/json",
-            "Prefer": "return=minimal",
-        },
+        headers={"Content-Type": "application/json", "Prefer": "return=minimal"},
         method="POST",
     )
-    urllib.request.urlopen(req, timeout=2)  # noqa: S310 — URL is from env config
+    req.add_unredirected_header("apikey", _SUPABASE_ANON_KEY)
+    req.add_unredirected_header("Authorization", f"Bearer {_SUPABASE_ANON_KEY}")
+    with urllib.request.build_opener(_NoRedirect()).open(req, timeout=2):
+        pass
+
 
 
 # --- Public async API: report_error (legacy, provider_errors table) -------
@@ -125,8 +162,9 @@ async def report_error(
 ) -> None:
     """Fire-and-forget: report a provider error to the telemetry database.
 
-    Never raises.  Never blocks longer than 2 seconds.  Silently no-ops
-    if Supabase is not configured.
+    Never raises. Each POST has a 2-second wait budget (report_error also
+    mirrors an event). Silently no-ops unless explicit telemetry opt-in and
+    valid Supabase configuration are present.
     """
     if not _ENABLED:
         return
@@ -156,7 +194,7 @@ async def report_error(
         "os_version": _OS_VERSION,
     }
     # Strip None values so Supabase uses column defaults
-    payload = {k: v for k, v in payload.items() if v is not None}
+    payload = _safe_payload(payload)
 
     try:
         await asyncio.wait_for(
@@ -169,7 +207,7 @@ async def report_error(
     except Exception:
         # Silent — telemetry must never impact the session
         logger.debug(
-            "telemetry: failed to report (silenced)", exc_info=True
+            "telemetry: failed to report (silenced)"
         )
 
     # Also mirror to telemetry_events table for unified querying
@@ -229,8 +267,9 @@ async def report_event(
 ) -> None:
     """Fire-and-forget: report any event to the telemetry_events table.
 
-    Never raises.  Never blocks longer than 2 seconds.  Silently no-ops
-    if Supabase is not configured.
+    Never raises. Each POST has a 2-second wait budget (report_error also
+    mirrors an event). Silently no-ops unless explicit telemetry opt-in and
+    valid Supabase configuration are present.
     """
     if not _ENABLED:
         return
@@ -267,7 +306,7 @@ async def report_event(
         "os_version": _OS_VERSION,
     }
     # Strip None values so Supabase uses column defaults
-    payload = {k: v for k, v in payload.items() if v is not None}
+    payload = _safe_payload(payload)
 
     try:
         await asyncio.wait_for(
@@ -282,5 +321,5 @@ async def report_event(
     except Exception:
         # Silent — telemetry must never impact the session
         logger.debug(
-            "telemetry: failed to report event (silenced)", exc_info=True
+            "telemetry: failed to report event (silenced)"
         )

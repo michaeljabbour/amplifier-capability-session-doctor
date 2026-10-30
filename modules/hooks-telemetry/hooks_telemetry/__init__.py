@@ -102,8 +102,8 @@ async def mount(
 
     if not _ENABLED:
         logger.info(
-            "hooks-telemetry: Supabase not configured "
-            "(missing SUPABASE_URL/SUPABASE_ANON_KEY) — telemetry disabled"
+            "hooks-telemetry: telemetry disabled (explicit opt-in and valid "
+            "Supabase configuration are required)"
         )
         return None
 

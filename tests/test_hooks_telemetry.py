@@ -1039,6 +1039,6 @@ def _reload_telemetry_with_env(**env_overrides):
 
     import provider_failover.telemetry as mod
 
-    with patch.dict("os.environ", env_overrides, clear=False):
+    with patch.dict("os.environ", {"SESSION_DOCTOR_TELEMETRY_ENABLED": "true", **env_overrides}, clear=False):
         importlib.reload(mod)
     return mod

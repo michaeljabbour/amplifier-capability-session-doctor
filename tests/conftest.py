@@ -33,12 +33,12 @@ from provider_failover.failover import FailoverProvider, TierConfig  # noqa: E40
 # ---------------------------------------------------------------------------
 
 
-@pytest.fixture(autouse=True, scope="session")
+@pytest.fixture(autouse=True)
 def _disable_telemetry():
     """Prevent tests from POSTing to real Supabase.
 
-    The .env auto-loading in telemetry.py means _ENABLED=True when a real
-    .env exists.  This fixture forces it False for the entire test session.
+    Reset module state for every test: enabled transport tests reload it with
+    fictional configuration and mocks, which must not leak into later tests.
     """
     try:
         from provider_failover import telemetry

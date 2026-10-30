@@ -27,7 +27,7 @@
     {
       "title": "Recover an interrupted tool call",
       "brief": "Use Session Doctor to inspect a disposable direct role/content JSONL transcript. Diagnose before changing anything. If a missing tool result is unambiguous, prepare a new repair copy that marks the result unavailable, preserve the original and explain the remaining host-resume check.",
-      "before": "An interrupted tool call is “fixed” by a fabricated successful result or truncated history.",
+      "before": "An interrupted tool call is \u201cfixed\u201d by a fabricated successful result or truncated history.",
       "after": "A new copy records the missing result as interrupted and leaves the original intact.",
       "why": "The repaired structure remains honest about what actually executed.",
       "fictional": true
@@ -129,12 +129,90 @@
     "proof_summary": "Native and functional fixtures cover supported structure, ambiguous failures and copy-only repair. They do not establish successful resumption in every host or provider.",
     "next_step": "Work on a disposable copy first and identify the exact transcript format before requesting a repair."
   },
-  "repository_url": "https://github.com/michaeljabbour/amplifier-skill-session-doctor",
+  "repository_url": "https://github.com/michaeljabbour/amplifier-capability-session-doctor",
+  "name": "amplifier-capability-session-doctor",
+  "legacy_names": [
+    "amplifier-skill-session-doctor",
+    "session-doctor"
+  ],
+  "contract_version": "amplifier-capability/v1",
+  "version": null,
+  "version_basis": "No release version recorded; installer requires a full Git revision pin.",
+  "engine": "LLM",
+  "engine_components": {
+    "caller_method": "LLM"
+  },
+  "surfaces": [
+    "agent-skills",
+    "amplifier-bundle"
+  ],
+  "portable_method": {
+    "name": "session-doctor",
+    "path": "skills/session-doctor",
+    "include": [
+      "."
+    ],
+    "contract": "Agent Skills directory; caller applies the method; no independent execution loop is installed."
+  },
+  "interfaces": {
+    "portable": {
+      "input": "Caller task and explicitly authorized context",
+      "output": "Diagnose a broken agent session and prepare a reversible repair without inventing execution results.",
+      "failure": "Report insufficient evidence, unsupported context or host limitation; never turn discovery into an execution claim."
+    },
+    "native": {
+      "distribution": null,
+      "entrypoints": {},
+      "docs": [
+        "docs/CONSOLIDATION.md",
+        "docs/ADAPTERS.md"
+      ],
+      "status": "Existing declared entrypoints preserved; runtime signatures, service access and installation tests remain separate evidence."
+    },
+    "host_adapters": {
+      "amplifier_bundle": "bundle.md",
+      "grants_autonomy": false
+    }
+  },
+  "permissions": {
+    "installation": {
+      "network": false,
+      "executes_capability_code": false,
+      "writes": [
+        "Selected discovery folders",
+        ".capability-state transaction backups"
+      ],
+      "grants_runtime_permissions": false
+    },
+    "runtime": {
+      "status": "Host/caller authorizes each operation; installation is not a tool allowlist or standing approval.",
+      "declared_boundaries": [
+        "The helper supports direct role/content JSONL only; live resume and provider acceptance are separate checks."
+      ]
+    },
+    "secret_names": {
+      "discovery_requires": [],
+      "native_runtime_inventory": "See native documentation; no credentials are bundled or inferred."
+    }
+  },
+  "dataflow": {
+    "installation": "Read pinned tracked portable source and copy locally with SHA-256 receipts. No source text is transmitted.",
+    "method": "Caller supplies authorized context; existing promise and boundaries govern output.",
+    "native_runtime": "Provider/network/storage flows are owned by native interfaces and host authorization; these files do not enable them."
+  },
+  "source_policy": {
+    "revision": "Explicit full40-character Git commit required at installation; never infer latest.",
+    "repository_rename": "Public identity may change; skill folder, imports, entrypoints, tool IDs and schemas remain stable.",
+    "research": ".research/market remains local and ignored; AGENTS governs refresh."
+  },
   "film": {
     "file": "session-doctor-film",
     "seconds": 70,
     "heading": "A zipper with a missing tooth.",
     "blurb": "In 70 seconds, a laptop sleeps halfway through a job and the session will not resume. Session Doctor looks before it touches anything, names the one tool call with no result, leaves the original alone and repairs a copy with a piece that tells the truth. A broken line or a repeated ID stops it for review. Captions are on the player; a transcript is below.",
     "note": "The session and the photo-renaming job are a fictional example. The film shows how the skill behaves; it does not report results."
-  }
+  },
+  "repository_aliases": [
+    "https://github.com/michaeljabbour/amplifier-skill-session-doctor"
+  ]
 }

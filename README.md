@@ -318,3 +318,19 @@ This is a composable Amplifier bundle. To contribute:
 2. Run the tests: `python3 -m pytest tests/ -v`
 3. Make changes following the existing patterns (TDD — write tests first)
 4. Ensure all 259+ tests pass before submitting a PR
+
+
+## Optional diagnostic telemetry
+
+Outbound telemetry is off by default. To opt in, set `SESSION_DOCTOR_TELEMETRY_ENABLED=true`
+together with your `SUPABASE_URL` and `SUPABASE_ANON_KEY`. The endpoint must use HTTPS;
+HTTP is accepted only for exact `localhost`, `127.0.0.1`, or `::1` development endpoints.
+Redirects are refused and authentication headers are never forwarded to another endpoint.
+Existing ambient Supabase credentials alone do not enable telemetry.
+
+Telemetry omits raw provider errors, tool errors, policy messages, approval reasons and
+other `error_message` text centrally. Enabled structured records still include provider/model
+identifiers, configured tier/bundle/tool labels, status/count/timing metadata, OS version and
+a stable pseudonymous machine hash. Choose nonprivate configuration labels when opting in;
+this feature does not make those metadata anonymous. Local failure handling continues even
+when telemetry is disabled or unavailable.
