@@ -14,3 +14,7 @@ Repair: scripts/session_doctor.py SOURCE --repair-copy NEWFILE only fills missin
 Verify the new copy structurally and separately test actual host/provider resumption when authorized. A clean structural report is not proof of provider acceptance. For other native event formats, use the host's documented adapter after inspecting the schema; do not feed it to the direct-message helper and pretend the formats match.
 
 Provider diagnosis and cache identity checks use the retained optional provider-failover/telemetry modules and repository agents. A cache mismatch does not justify a force-push or broad cache deletion. Prepare an isolated cache copy and source comparison, then apply only the authorized repair. Escalation contains exact error types and redacted version/configuration evidence, not full private logs.
+
+## Optional coaching checkpoint
+
+Read [the local coaching guide](references/coaching-session.v1.md) only when the person asks for practice or optional session bookkeeping. Keep native operations direct and unattended; the guide adds only a separate opt-in pre/post review.
