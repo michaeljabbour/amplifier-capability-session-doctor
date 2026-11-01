@@ -2,11 +2,11 @@
 
 Understand a broken session before you repair it.
 
-Watch the [70-second film](https://michaeljabbour.github.io/amplifier-skill-session-doctor/#film): a session that will not resume, one tool call with no result, and a repaired copy that says so instead of faking it. The example in it is fictional.
+Watch the [70-second film](https://michaeljabbour.github.io/amplifier-capability-session-doctor/#film): a session that will not resume, one tool call with no result, and a repaired copy that says so instead of faking it. The example in it is fictional.
 
 For people whose agent session will not resume. Session Doctor checks the supported transcript structure, names the ambiguity and prepares a separate repair copy when the evidence supports one, leaving the original available.
 
-[Explore the site](https://michaeljabbour.github.io/amplifier-skill-session-doctor/)
+[Explore the site](https://michaeljabbour.github.io/amplifier-capability-session-doctor/)
 
 ## What you get
 
@@ -17,8 +17,8 @@ For people whose agent session will not resume. Session Doctor checks the suppor
 ## Start here
 
 ```sh
-git clone https://github.com/michaeljabbour/amplifier-skill-session-doctor.git
-cd amplifier-skill-session-doctor
+git clone https://github.com/michaeljabbour/amplifier-capability-session-doctor.git
+cd amplifier-capability-session-doctor
 python3 scripts/capability.py install --dest ~/.agents/skills
 ```
 
@@ -106,7 +106,7 @@ App bundles compose onto every session automatically, regardless of which primar
 
 ```bash
 # From GitHub
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-skill-session-doctor@main --app
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-capability-session-doctor@main --app
 
 # From a local clone
 amplifier bundle add file:///path/to/amplifier-bundle-provider-doctor --app
@@ -125,7 +125,7 @@ You should see `provider-doctor` with status `app`.
 If you only want it for specific projects rather than globally:
 
 ```bash
-amplifier bundle add git+https://github.com/michaeljabbour/amplifier-skill-session-doctor@main
+amplifier bundle add git+https://github.com/michaeljabbour/amplifier-capability-session-doctor@main
 amplifier bundle use provider-doctor
 ```
 
@@ -314,7 +314,7 @@ MIT
 
 This is a composable Amplifier bundle. To contribute:
 
-1. Clone the repo: `git clone https://github.com/michaeljabbour/amplifier-skill-session-doctor.git`
+1. Clone the repo: `git clone https://github.com/michaeljabbour/amplifier-capability-session-doctor.git`
 2. Run the tests: `python3 -m pytest tests/ -v`
 3. Make changes following the existing patterns (TDD — write tests first)
 4. Ensure all 259+ tests pass before submitting a PR
