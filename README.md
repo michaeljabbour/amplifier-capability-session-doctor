@@ -13,6 +13,7 @@ For people whose agent session will not resume. Session Doctor checks the suppor
 - **Keep the original intact.** Diagnose first and write any supported repair to a new destination that cannot overwrite existing work.
 - **See what is actually missing.** Distinguish a missing tool result from malformed JSON, duplicate IDs or an unsupported event format.
 - **Avoid invented history.** A synthetic repair entry says interrupted with no result available; it never pretends an action completed.
+- **Refuse ambiguous JSON.** Duplicate object keys, non-finite constants and numeric values that overflow the parser's finite representation are reported as invalid lines. They cannot be normalized silently into a repair copy.
 
 ## Start here
 

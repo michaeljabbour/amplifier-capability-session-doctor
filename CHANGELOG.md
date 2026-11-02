@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased — unambiguous repair input
+
+- Reject duplicate JSON object keys, NaN/Infinity constants and floating-point overflow before a direct JSONL transcript can qualify for repair. Existing valid finite numbers, Unicode and literal text retain their behavior. The source remains unchanged and ambiguous input creates no repair copy.
+- Add API and actual CLI regressions using fictional temporary transcripts. These are parser/repair contract checks, not evidence that any host can resume a repaired session.
+
 ## Unreleased — optional coaching checkpoint
 
 - Add a self-contained opt-in practice/review guide with a fictional task, preserved baseline, explicit scope/budget, user stop, reviewed keep/revert and private-by-choice records. Keep native operations, existing method budgets and evidence rules unchanged; no human efficacy or outside-use result is claimed.

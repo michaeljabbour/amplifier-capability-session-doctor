@@ -5,9 +5,30 @@ import argparse
 import copy
 import hashlib
 import json
+import math
 from pathlib import Path
 
 MAX_BYTES = 16_000_000
+
+
+def _unique_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError('Duplicate JSON object key')
+        result[key] = value
+    return result
+
+
+def _finite_float(value):
+    number = float(value)
+    if not math.isfinite(number):
+        raise ValueError('JSON number cannot be represented as a finite value')
+    return number
+
+
+def _reject_constant(_):
+    raise ValueError('Non-finite JSON constant')
 
 
 def load(path):
@@ -16,8 +37,11 @@ def load(path):
     messages=[]; invalid=[]
     for line,text in enumerate(raw.decode('utf-8').splitlines(),1):
         if not text.strip(): continue
-        try: messages.append(json.loads(text))
-        except json.JSONDecodeError: invalid.append(line)
+        try:
+            messages.append(json.loads(text, object_pairs_hook=_unique_object,
+                                       parse_float=_finite_float, parse_constant=_reject_constant))
+        except (json.JSONDecodeError, ValueError):
+            invalid.append(line)
     return raw,messages,invalid
 
 
